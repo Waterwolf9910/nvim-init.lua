@@ -23,7 +23,10 @@ return {
             -- DAP Support
             'mfussenegger/nvim-dap',
             'jay-babu/mason-nvim-dap.nvim',
-            'rcarriga/nvim-dap-ui'
+            'rcarriga/nvim-dap-ui',
+
+            -- LSP Signature
+            'ray-x/lsp_signature.nvim'
         },
         config = function (_spec)
             vim.api.nvim_create_autocmd('LspAttach', {
@@ -36,6 +39,13 @@ return {
                     vim.keymap.set({'i', 'n'}, '<C-k><C-r>', function () vim.lsp.buf.references() end, opts)
                     vim.keymap.set({'i', 'n'}, '<F2>', function () vim.lsp.buf.rename() end, opts)
                     vim.keymap.set({'i', 'n'}, '<C-k><C-e>', function() vim.diagnostic.open_float() end, opts)
+                    require('lsp_signature').setup({
+                        auto_close_after = 1,
+                        bind = true,
+                        transparency = 60,
+                        toggle_key = '<A-s>',
+                        select_signature_key = '<A-n>'
+                    }, event.buf)
                 end
             })
 
@@ -52,6 +62,7 @@ return {
                 sources = {
                     { name = 'path' },
                     { name = 'nvim_lsp' },
+                    { name = 'nvim_lsp_signature_help' },
                     { name = 'luasnip', keyword_length = 2 },
                     { name = 'buffer', keyword_length = 3 }
                 },
@@ -64,6 +75,9 @@ return {
                     expand = function (args)
                         require('luasnip').lsp_expand(args.body)
                     end
+                },
+                completion = {
+                    completeopt = 'menu,menuone,preview,noinsert'
                 }
             })
 
@@ -74,27 +88,29 @@ return {
             require('mason-lspconfig').setup({
                 automatic_installation = true,
                 ensure_installed = {
-                    'tsserver',
-                    'eslint',
-                    'lua_ls',
-                    "csharp_ls",
-                    'rust_analyzer',
-                    'clangd',
                     'arduino_language_server',
-                    -- 'omnisharp',
-                    'neocmake',
+                    'autotools_ls',
+                    -- "csharp_ls",
+                    'clangd',
+                    'cssls',
                     'diagnosticls',
-                    'dockerls',
                     'docker_compose_language_service',
+                    'dockerls',
+                    'eslint',
                     'gradle_ls',
                     'html',
-                    'jsonls',
                     'jdtls',
-                    'pyright',
-                    -- 'snyk_ls',
-                    'autotools_ls',
+                    'jsonls',
+                    'lemminx',
+                    'lua_ls',
                     'marksman',
+                    'neocmake',
+                    'omnisharp',
+                    'pyright',
+                    'rust_analyzer',
+                    -- 'snyk_ls',
                     -- 'somesass_ls',
+                    'tsserver',
                     'yamlls'
                 },
                 handlers = {
@@ -159,7 +175,43 @@ return {
                 }
             })
 
-            dapui.setup()
+            dapui.setup({
+                layouts = {
+                    {
+                        elements = {
+                            {
+                                id = 'console',
+                                size = 0.5
+                            },
+                            {
+                                id = 'repl',
+                                size = 0.5
+                            }
+                        },
+                        size = 10,
+                        position = 'bottom'
+                    },
+                    {
+                        elements = {
+                            {
+                                id = 'scopes'
+                            },
+                            {
+                                id = 'stacks'
+                            },
+                            {
+                                id = 'breakpoints'
+                            }
+                        },
+                        size = 25,
+                        position = 'right'
+                    }
+                },
+                controls = {
+                    enabled = true,
+                    element = 'console'
+                }
+            })
 
             dap.listeners.before.attach.dapui_config = function()
                 dapui.open()

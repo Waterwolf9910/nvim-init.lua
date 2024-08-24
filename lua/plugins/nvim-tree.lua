@@ -18,7 +18,10 @@ return {
                 vim.keymap.set('n', '<C-J>', api.tree.change_root_to_node, Desc("Change Directory")) -- cd, C-J -> C-Enter (showkey -a)
                 vim.keymap.set('n', 'i', api.node.show_info_popup, Desc("Toggle Info")) -- info
                 vim.keymap.set('n', 'a', api.fs.create, Desc("Create New File")) -- create new
-                vim.keymap.set('n', 'd', api.fs.trash, Desc("Trash")) -- create new
+                vim.keymap.set('n', 'n', api.fs.create, Desc("Create New File")) -- create new
+                vim.keymap.set('n', 'd', api.fs.trash, Desc("Trash")) -- send file to trash
+                vim.keymap.set('n', '<Del>', api.fs.trash, Desc("Trash")) -- send file to trash
+                vim.keymap.set('n', '<S-Del>', api.fs.remove, Desc("Delete")) -- remove file
                 vim.keymap.set('n', 'T', function ()
                     if vim.fn.has('win32') then
                         print("Not Supported")

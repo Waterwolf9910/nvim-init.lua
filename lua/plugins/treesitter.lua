@@ -16,13 +16,13 @@ return {
                     "c_sharp", "rust",
                     "query", "css", "diff",
                     "json", "json5", "jsonc",
-                    "make", "python", "html", 
+                    "make", "python", "html",
                     "bash", "cmake", "comment",
                     "dockerfile", "gdscript", "git_config",
                     "gitignore", "godot_resource", "scss",
                     "sql", "tsx", "yaml"
                 },
-                
+
                 indent = {
                     enable = true
                 },

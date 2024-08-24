@@ -9,10 +9,6 @@ vim.keymap.set = function (mode, lhs, rhs, opt)
         local _rhs = rhs
         rhs = function ()
             local prev_mode = vim.api.nvim_get_mode().mode
-            -- vim.defer_fn(function ()
-            --     print(debug.traceback())
-            --     print(rhs, prev_mode, mode, _rhs, opt)
-            -- end, 250)
             local prefix = ''
 
             if prev_mode == 'n' or prev_mode == 'nt' then
@@ -24,27 +20,32 @@ vim.keymap.set = function (mode, lhs, rhs, opt)
             if prev_mode == 'i' and vim.bo.modifiable ~= true then
                 prev_mode = ''
             end
+            -- vim.defer_fn(function ()
+            --     -- print(debug.traceback())
+            --     print(dump(mode), '|', lhs, '|', _rhs, '|', dump(opt), '|', rhs, '|', prev_mode, '|', prefix)
+            -- end, 250)
 
             return prefix .. _rhs .. prev_mode
         end
     end
-    opt = opt or { silent = true, expr = expr }
+    opt = vim.tbl_extend("keep", (opt or { silent = true }), { expr = expr })
     default_set(mode, lhs, rhs, opt)
 end
 
 -- Multimode
 
 -- Basic Editing
-vim.keymap.set({ 'i', 'n' }, '<C-Del>', "dd") -- delete line
+vim.keymap.set({ 'i', 'n' }, '<S-Del>', "dd") -- delete line
 vim.keymap.set({ 'i', 'n' }, '<C-z>', vim.cmd.undo) -- redo
 vim.keymap.set({ 'i', 'n' }, '<C-y>', vim.cmd.redo)              -- undo
 vim.keymap.set({ 'n', 'i', 'v' }, "<Home>", ":SmartHomeKey<CR>") -- home
 -- vim.keymap.set({ 'i', 'n' }, '<C-Up>', '<PageUp>')
 -- vim.keymap.set({ 'i', 'n' }, '<C-Down>', '<PageDown>')
-vim.keymap.set({ 'i', 'n' }, '<C-Up>', '8k') -- move 8 characters up
-vim.keymap.set({ 'i', 'n' }, '<C-Down>', '8j') -- move 8 characters down
-vim.keymap.set({ 'i', 'n' }, '<C-Left>', 'b') -- move word left
-vim.keymap.set({ 'i', 'n' }, '<C-Right>', 'w') -- move word right
+vim.keymap.set({ 'i', 'n' }, '<C-Up>', '4k') -- move 4 characters up
+vim.keymap.set({ 'i', 'n' }, '<C-Down>', '4j') -- move 4 characters down
+vim.keymap.set({ 'i', 'n' }, '<C-[>', '<<') -- indent left
+vim.keymap.set({ 'i', 'n' }, '<C-]>', '>>') -- indent right
+vim.keymap.set({'i', 'n'}, '<C-Del>', 'dw') -- delete word back 
 
 -- Tab
 vim.keymap.set({ 'i', 'n' }, '<C-\\>', ":vsplit<CR>") -- vertically split buffer
@@ -65,12 +66,15 @@ vim.keymap.set({ 'i', 'n' }, '<A-Right>', '5zl') -- shift buffer view 5 right
 
 -- Misc
 vim.keymap.set({ 'i', 'n' }, "<C-b>", ":NvimTreeToggle<CR>") -- toggle explorer
+vim.keymap.set({ 'i', 'n' }, '<C-f>', '<C-c>/', { silent = false })
 
 
 -- Insert Mode Keybinds
 
-vim.keymap.set('i', '<C-f>', '<C-c>/', { silent = false })
-
+-- Misc
+vim.keymap.set('i', '<C-Left>', '<C-c>hbi') -- move word left
+vim.keymap.set('i', '<C-Right>', '<C-c>lwi') -- move word right
+vim.api.nvim_set_keymap('i', '<C-h>', '<C-w>', { noremap = true }) -- delete word forward
 
 -- Normal Mode Keybinds
 
@@ -96,7 +100,9 @@ vim.keymap.set('n', "<leader>W", ":qa<CR>") -- close all windows (quit vim)
 
 -- Misc
 vim.keymap.set('n', "<leader>q", ":bd<CR>") -- close buffer
-
+vim.keymap.set('n', '<C-Left>', 'b') -- move word left
+vim.keymap.set('n', '<C-Right>', 'w') -- move word right
+vim.api.nvim_set_keymap('n', '<C-h>', 'i<C-w>', { silent = false, noremap = true }) -- delete word left
 
 -- Visual Mode (Highlighting) keybinds
 
@@ -112,3 +118,8 @@ vim.keymap.set('v', 'c', 'y') -- copy (yank)
 
 vim.keymap.set('c', "<Up>", "<C-p>", { silent = false }) -- go up through history
 vim.keymap.set('c', "<Down>", "<C-n>", { silent = false }) -- go down through history
+
+
+-- Unmaps
+--
+vim.keymap.set({'n', 'v'}, 'o', '<Nop>')

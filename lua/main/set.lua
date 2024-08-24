@@ -12,8 +12,6 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
-vim.opt.wrap = false
-
 -- Undo, Backup and Copy
 -- vim.opt.uc = 100 -- updatecount
 vim.opt.swapfile = false
@@ -48,3 +46,8 @@ vim.opt.fileformat = 'unix'
 vim.opt.fileformats = 'unix'
 vim.opt.fixeol = true
 vim.opt.eof = true
+vim.opt.wrap = false
+vim.opt.ww = '<,>,[,]' --whichwrap
+vim.opt.ve = 'onemore'
+-- vim.opt.guicursor = 'n-v-c-sm-i-ci-ve:ver25,r-cr-o:hor20'
+vim.opt.completeopt = 'menu,menuone,preview,noinsert'
