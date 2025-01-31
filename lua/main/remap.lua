@@ -2,6 +2,49 @@ vim.g.mapleader = " "
 
 local default_set = vim.keymap.set
 
+--- Table of |:map-arguments|.
+--- Same as |nvim_set_keymap()| {opts}, except:
+--- - {replace_keycodes} defaults to `true` if "expr" is `true`.
+---
+--- Also accepts:
+--- @class vim.keymap.set.Opts : vim.api.keyset.keymap
+--- @inlinedoc
+---
+--- Creates buffer-local mapping, `0` or `true` for current buffer.
+--- @field buffer? integer|boolean
+---
+--- Make the mapping recursive. Inverse of {noremap}.
+--- (Default: `false`)
+--- @field remap? boolean
+
+--- Adds a new |mapping|.
+--- Examples:
+---
+--- ```lua
+--- -- Map to a Lua function:
+--- vim.keymap.set('n', 'lhs', function() print("real lua function") end)
+--- -- Map to multiple modes:
+--- vim.keymap.set({'n', 'v'}, '<leader>lr', vim.lsp.buf.references, { buffer = true })
+--- -- Buffer-local mapping:
+--- vim.keymap.set('n', '<leader>w', "<cmd>w<cr>", { silent = true, buffer = 5 })
+--- -- Expr mapping:
+--- vim.keymap.set('i', '<Tab>', function()
+---   return vim.fn.pumvisible() == 1 and "<C-n>" or "<Tab>"
+--- end, { expr = true })
+--- -- <Plug> mapping:
+--- vim.keymap.set('n', '[%%', '<Plug>(MatchitNormalMultiBackward)')
+--- ```
+---
+---@param mode string|string[] Mode short-name, see |nvim_set_keymap()|.
+---                            Can also be list of modes to create mapping on multiple modes.
+---@param lhs string           Left-hand side |{lhs}| of the mapping.
+---@param rhs string|function  Right-hand side |{rhs}| of the mapping, can be a Lua function.
+---
+---@param opts? vim.keymap.set.Opts
+---@see |nvim_set_keymap()|
+---@see |maparg()|
+---@see |mapcheck()|
+---@see |mapset()|
 vim.keymap.set = function (mode, lhs, rhs, opt)
     local expr = false
     if (type(mode) == 'table' and type(rhs) ~= 'function') then
@@ -48,6 +91,7 @@ vim.keymap.set({ 'i', 'n' }, '<C-]>', '>>') -- indent right
 vim.keymap.set({'i', 'n'}, '<C-Del>', 'dw') -- delete word back 
 
 -- Tab
+vim.keymap.set({ 'i', 'n' }, "<C-t>", '<C-n>') -- New Tab (TODO)
 vim.keymap.set({ 'i', 'n' }, '<C-\\>', ":vsplit<CR>") -- vertically split buffer
 vim.keymap.set({ 'i', 'n' }, '<C-S-Left>', ":tabp<CR>") -- tab back
 vim.keymap.set({ 'i', 'n' }, '<C-S-Right>', ":tabn<CR>") -- tab forward
@@ -79,7 +123,7 @@ vim.api.nvim_set_keymap('i', '<C-h>', '<C-w>', { noremap = true }) -- delete wor
 -- Normal Mode Keybinds
 
 -- File explorer
-vim.keymap.set("n", '<leader>e', ":NvimTreeOpen<CR>") -- open file explorer
+vim.keymap.set('n', '<leader>e', ":NvimTreeOpen<CR>") -- open file explorer
 
 -- Tabs
 vim.keymap.set('n', '<leader>tn', ":tabnew<CR>:NvimTreeOpen<CR>") -- create new tab

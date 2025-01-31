@@ -89,7 +89,7 @@ return {
                 automatic_installation = true,
                 ensure_installed = {
                     'arduino_language_server',
-                    'autotools_ls',
+                    -- 'autotools_ls',
                     -- "csharp_ls",
                     'clangd',
                     'cssls',
@@ -101,6 +101,7 @@ return {
                     'html',
                     'jdtls',
                     'jsonls',
+                    'kotlin_language_server',
                     'lemminx',
                     'lua_ls',
                     'marksman',

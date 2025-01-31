@@ -11,9 +11,9 @@ return {
                 -- A list of parser names, or "all" (the five listed parsers should always be installed)
                 ensure_installed = {
                     "c", "cpp", "lua",
-                    "java", "javascript",
-                    "typescript", "css",
-                    "c_sharp", "rust",
+                    "java", "kotlin",
+                    "javascript", "typescript",
+                    "css", "c_sharp", "rust",
                     "query", "css", "diff",
                     "json", "json5", "jsonc",
                     "make", "python", "html",
