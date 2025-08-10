@@ -1,10 +1,10 @@
 return {
     {
-        'williamboman/mason.nvim',
+        'mason-org/mason.nvim',
         branch = 'main',
         dependencies = {
             -- Ensure Install LSP
-            'williamboman/mason-lspconfig.nvim',
+            'mason-org/mason-lspconfig.nvim',
 
             -- LSP Support
             'neovim/nvim-lspconfig',
