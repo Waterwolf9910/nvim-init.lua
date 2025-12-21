@@ -82,76 +82,70 @@ return {
             })
 
             lsp_caps = vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), require('cmp_nvim_lsp.init').default_capabilities())
-
-
-            require('mason').setup({})
+            
+            vim.lsp.config['clangd'] = { -- override
+                cmd = {
+                    "clangd",
+                    "--offset-encoding=utf-8"
+                },
+            }
+            vim.lsp.config['lua_ls'] = {
+                settings = {
+                    Lua = {
+                        runtime = {
+                            version = 'LuaJIT'
+                        },
+                        diagnostics = {
+                            globals = {'vim'}
+                        },
+                        workspace = {
+                            library = {
+                                vim.env.VIMRUNTIME
+                            }
+                        }
+                    }
+                }
+            }
+            vim.lsp.config['qmlls'] = {
+                cmd = {'qmlls', '-E'}
+            }
+            vim.lsp.config('*', { -- add
+                capabilities = lsp_caps
+            })
+            require('mason').setup({
+                PATH = "append" -- local install first
+            })
             require('mason-lspconfig').setup({
                 automatic_installation = true,
+                automatic_enable = {
+                    exclude = { "jdtls" }
+                };
                 ensure_installed = {
-                    'arduino_language_server',
+                    -- 'arduino_language_server',
                     -- 'autotools_ls',
                     -- "csharp_ls",
-                    'clangd',
+                    -- 'clangd',
                     'cssls',
                     'diagnosticls',
                     'docker_compose_language_service',
                     'dockerls',
                     'eslint',
-                    'gradle_ls',
+                    -- 'gradle_ls',
                     'html',
-                    'jdtls',
+                    -- 'jdtls',
                     'jsonls',
-                    'kotlin_language_server',
+                    -- 'kotlin_language_server',
                     'lemminx',
                     'lua_ls',
                     'marksman',
-                    'neocmake',
+                    -- 'neocmake',
                     'omnisharp',
-                    'pyright',
+                    -- 'pyright',
                     'rust_analyzer',
                     -- 'snyk_ls',
                     -- 'somesass_ls',
-                    'tsserver',
+                    'ts_ls',
                     'yamlls'
-                },
-                handlers = {
-                    -- lsp_zero.default_setup
-                    function (server_name)
-                        require('lspconfig')[server_name].setup({
-                            capabilities = lsp_caps
-                        })
-                    end,
-                    jdtls = function()
-                    end,
-                    clangd = function ()
-                        require('lspconfig').clangd.setup({
-                            capabilities = lsp_caps,
-                            cmd = {
-                                "clangd",
-                                "--offset-encoding=utf-8"
-                            }
-                        })
-                    end,
-                    lua_ls = function ()
-                        require('lspconfig').lua_ls.setup({
-                            capabilities = lsp_caps,
-                            settings = {
-                                Lua = {
-                                    runtime = {
-                                        version = 'LuaJIT'
-                                    },
-                                    diagnostics = {
-                                        globals = {'vim'}
-                                    },
-                                    workspace = {
-                                        library = {
-                                            vim.env.VIMRUNTIME
-                                        }
-                                    }
-                                }
-                            }
-                        })
-                    end
                 }
             })
 
@@ -176,6 +170,7 @@ return {
                 }
             })
 
+            ---@diagnostic disable-next-line: missing-fields
             dapui.setup({
                 layouts = {
                     {
@@ -248,37 +243,4 @@ return {
             })
         end
     },
-    {
-        'j-hui/fidget.nvim',
-        dependencies = {
-            'nvim-tree/nvim-tree.lua',
-        },
-        config = function ()
-             require("fidget").setup({
-                progress = {
-                    display = {
-                        done_ttl = 7,
-                    },
-                },
-                notification = {
-                    history_size = 256,
-                    override_vim_notify = true,
-                    window = {
-                        winblend = 70,
-                        border = 'shadow'
-                    }
-                },
-
-                logger = {
-                    level = vim.log.levels.INFO
-                },
-
-                integration = {
-                    ["nvim-tree"] = {
-                        enable = true
-                    }
-                }
-            })
-        end
-    }
 }

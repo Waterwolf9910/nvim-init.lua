@@ -1,7 +1,7 @@
 {
     "Lua.workspace.library": [
         "~/.config/nvim",
-        "~/.local/share/nvim/",
+        "~/.local/share/nvim/lazy",
         "/etc/xdg/nvim",
         "~/.local/share/nvim/site",
         "/usr/local/share/nvim/site",

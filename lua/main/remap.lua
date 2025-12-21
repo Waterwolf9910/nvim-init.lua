@@ -167,3 +167,8 @@ vim.keymap.set('c', "<Down>", "<C-n>", { silent = false }) -- go down through hi
 -- Unmaps
 --
 vim.keymap.set({'n', 'v'}, 'o', '<Nop>')
+
+
+-- Terminal Maps
+--
+vim.keymap.set('t', "<Esc>", '<C-\\><C-n>')
