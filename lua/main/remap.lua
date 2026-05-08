@@ -88,7 +88,8 @@ vim.keymap.set({ 'i', 'n' }, '<C-Up>', '4k') -- move 4 characters up
 vim.keymap.set({ 'i', 'n' }, '<C-Down>', '4j') -- move 4 characters down
 vim.keymap.set({ 'i', 'n' }, '<C-[>', '<<') -- indent left
 vim.keymap.set({ 'i', 'n' }, '<C-]>', '>>') -- indent right
-vim.keymap.set({'i', 'n'}, '<C-Del>', 'dw') -- delete word back 
+vim.keymap.set({'i', 'n'}, '<C-Del>', 'dw') -- delete word back
+vim.keymap.set({'i', 'n', 'v'}, '<C-a>', 'ggVG') -- select all
 
 -- Tab
 vim.keymap.set({ 'i', 'n' }, "<C-t>", '<C-n>') -- New Tab (TODO)
